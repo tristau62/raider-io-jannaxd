@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Janna xd Land Leaderboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0b10;
+    --panel: rgba(28, 30, 42, 0.6);
+    --border: rgba(255, 255, 255, 0.06);
+    --border-strong: rgba(255, 255, 255, 0.12);
+    --text: #f1f1f5;
+    --muted: #8a8d99;
+    --accent: #ffb938;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--text);
+    padding: 48px 16px 64px;
+    min-height: 100vh;
+    background:
+      radial-gradient(900px 600px at 12% -10%, rgba(255, 185, 56, 0.10), transparent 60%),
+      radial-gradient(900px 700px at 100% 10%, rgba(124, 77, 255, 0.10), transparent 60%),
+      radial-gradient(700px 500px at 50% 100%, rgba(76, 175, 122, 0.06), transparent 60%),
+      linear-gradient(180deg, #0a0b10 0%, #07080c 100%);
+    background-attachment: fixed;
+  }
+  body::before {
+    content: "";
+    position: fixed; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+    z-index: 0;
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 80%);
+            mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 80%);
+  }
+  .wrap { max-width: 820px; margin: 0 auto; position: relative; z-index: 1; }
+
+  .header { text-align: center; margin-bottom: 32px; }
+  h1 {
+    margin: 0;
+    font-family: "Cinzel", serif;
+    font-weight: 800;
+    font-size: 44px;
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, #ffd76b 0%, #ffb938 35%, #ff7e5f 100%);
+    -webkit-background-clip: text;
+            background-clip: text;
+    color: transparent;
+    text-shadow: 0 4px 30px rgba(255, 185, 56, 0.25);
+    line-height: 1.1;
+  }
+  .sub {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 8px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--panel);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    animation: fadeInUp 0.5s ease backwards;
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, var(--cc, transparent) 0%, transparent 35%);
+    opacity: 0.07;
+    pointer-events: none;
+  }
+  .card:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .card.top-1 { border-color: rgba(255, 215, 107, 0.35); box-shadow: 0 0 40px rgba(255, 215, 107, 0.10); }
+  .card.top-2 { border-color: rgba(200, 200, 210, 0.30); }
+  .card.top-3 { border-color: rgba(205, 127, 50, 0.30); }
+
+  .rank {
+    font-family: "Cinzel", serif;
+    font-weight: 800;
+    font-size: 28px;
+    width: 44px;
+    text-align: center;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    opacity: 0.45;
+  }
+  .top-1 .rank { color: #ffd76b; opacity: 1; text-shadow: 0 0 18px rgba(255, 215, 107, 0.5); }
+  .top-2 .rank { color: #d8d8e0; opacity: 1; text-shadow: 0 0 14px rgba(216, 216, 224, 0.4); }
+  .top-3 .rank { color: #d49159; opacity: 1; text-shadow: 0 0 14px rgba(212, 145, 89, 0.4); }
+
+  .avatar {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: #20222e center/cover no-repeat;
+    border: 2px solid var(--cc, var(--border-strong));
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.4);
+    flex-shrink: 0;
+  }
+
+  .info { min-width: 0; }
+  .card a.name {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.2px;
+  }
+  .card a.name:hover { color: var(--cc, var(--accent)); }
+  .realm {
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 2px;
+    letter-spacing: 0.3px;
+  }
+  .class { font-size: 11px; font-weight: 600; color: var(--cc, var(--muted)); }
+
+  .spacer { flex: 1; }
+
+  .score-wrap { text-align: right; flex-shrink: 0; }
+  .score {
+    font-family: "Cinzel", serif;
+    font-size: 30px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    color: var(--cc, var(--text));
+    text-shadow: 0 0 24px var(--cc-glow, transparent);
+    line-height: 1;
+  }
+  .score-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .roles { display: flex; gap: 12px; font-size: 11px; color: var(--muted); margin-top: 6px; font-variant-numeric: tabular-nums; }
+  .role { display: inline-flex; gap: 5px; align-items: baseline; }
+  .role-label { text-transform: uppercase; letter-spacing: 0.6px; font-size: 9px; font-weight: 700; }
+  .role-val { color: var(--text); font-weight: 600; font-size: 12px; }
+  .role.tank   .role-label { color: #c69b6d; }
+  .role.heal   .role-label { color: #4caf7a; }
+  .role.dps    .role-label { color: #e06b6b; }
+  .role.zero   .role-val,
+  .role.zero   .role-label { opacity: 0.3; }
+
+  .err { color: #e06b6b; font-size: 12px; }
+  .skeleton { color: var(--muted); font-size: 13px; padding: 8px 0; }
+  .footer { color: var(--muted); font-size: 11px; margin-top: 24px; text-align: center; letter-spacing: 1px; }
+
+  .refresh-bar {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 24px;
+    padding: 10px 14px;
+    background: rgba(28, 30, 42, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 12px; color: var(--muted);
+  }
+  .refresh-bar .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #4caf7a;
+    box-shadow: 0 0 12px rgba(76, 175, 122, 0.6);
+    flex-shrink: 0;
+  }
+  .refresh-bar .dot.loading {
+    background: var(--accent);
+    animation: pulse 1.2s ease-out infinite;
+  }
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0   rgba(255, 185, 56, 0.6); }
+    70%  { box-shadow: 0 0 0 8px rgba(255, 185, 56, 0); }
+    100% { box-shadow: 0 0 0 0   rgba(255, 185, 56, 0); }
+  }
+  .refresh-bar .bar-track {
+    flex: 1; height: 3px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden;
+  }
+  .refresh-bar .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), #ff7e5f);
+    width: 0%;
+    transition: width 1s linear;
+  }
+  .refresh-bar button {
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    color: var(--text);
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    transition: all 0.15s;
+  }
+  .refresh-bar button:hover {
+    background: rgba(255, 185, 56, 0.1);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  @media (max-width: 540px) {
+    h1 { font-size: 32px; }
+    .avatar { width: 44px; height: 44px; }
+    .score { font-size: 24px; }
+    .rank { font-size: 22px; width: 32px; }
+    .card { padding: 12px 14px; gap: 12px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <h1>Janna xd Land Leaderboard</h1>
+    <div class="sub">Current Season · Mythic+ Rating · raider.io</div>
+  </div>
+
+  <div class="refresh-bar">
+    <span class="dot" id="status-dot"></span>
+    <span id="status-text">Loading…</span>
+    <div class="bar-track"><div class="bar-fill" id="bar-fill"></div></div>
+    <button id="refresh-btn">Refresh now</button>
+  </div>
+
+  <div id="list"></div>
+  <div class="footer">Next refresh in <span id="countdown">—</span></div>
+</div>
+
+<script>
+  // Edit this list. Format: { region, realm, name }
+  // realm is the slug form (e.g. "area-52", not "Area 52")
+  const CHARACTERS = [
+    { region: "us", realm: "tichondrius",   name: "Karmabunni" },
+    { region: "us", realm: "tichondrius",   name: "Frostdkgobrr" },
+    { region: "us", realm: "tichondrius", name: "Spargycat" },
+    { region: "us", realm: "tichondrius", name: "Remytherat" },
+    { region: "us", realm: "tichondrius", name: "Gldk" },
+    { region: "us", realm: "tichondrius", name: "Feetslopgoon" },
+    { region: "us", realm: "sargeras", name: "Shabbarizz" },
+    { region: "us", realm: "tichondrius", name: "Aquendiia" },
+    { region: "us", realm: "tichondrius", name: "Eraiced" },
+    { region: "us", realm: "tichondrius", name: "Spargywater" },
+    { region: "us", realm: "illidan", name: "Huntrayjr" },
+    { region: "us", realm: "tichondrius", name: "Restyx" },
+    { region: "us", realm: "tichondrius", name: "Aquendlock" },
+    { region: "us", realm: "tichondrius", name: "Dilloc" },
+
+  ];
+
+  // WoW class colors
+  const CLASS_COLORS = {
+    "Death Knight": "#C41E3A", "Demon Hunter": "#A330C9", "Druid": "#FF7C0A",
+    "Evoker": "#33937F", "Hunter": "#AAD372", "Mage": "#3FC7EB",
+    "Monk": "#00FF98", "Paladin": "#F48CBA", "Priest": "#FFFFFF",
+    "Rogue": "#FFF468", "Shaman": "#0070DD", "Warlock": "#8788EE",
+    "Warrior": "#C69B6D",
+  };
+
+  async function fetchScore(c) {
+    const url = `https://raider.io/api/v1/characters/profile?region=${c.region}&realm=${c.realm}&name=${c.name}&fields=mythic_plus_scores_by_season:current`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    const scores = data.mythic_plus_scores_by_season?.[0]?.scores ?? {};
+    return {
+      ok: true,
+      name: data.name,
+      realm: data.realm,
+      class: data.class,
+      url: data.profile_url,
+      thumbnail: data.thumbnail_url,
+      score: scores.all ?? 0,
+      tank: scores.tank ?? 0,
+      heal: scores.healer ?? 0,
+      dps:  scores.dps ?? 0,
+    };
+  }
+
+  function hexToRgba(hex, a) {
+    const h = hex.replace('#', '');
+    const n = parseInt(h.length === 3 ? h.split('').map(c => c+c).join('') : h, 16);
+    return `rgba(${(n>>16)&255}, ${(n>>8)&255}, ${n&255}, ${a})`;
+  }
+
+  function render(results) {
+    const list = document.getElementById("list");
+    list.innerHTML = "";
+    results.sort((a, b) => (b.score ?? -1) - (a.score ?? -1));
+    results.forEach((r, i) => {
+      const card = document.createElement("div");
+      const rank = i + 1;
+      const topClass = rank === 1 ? 'top-1' : rank === 2 ? 'top-2' : rank === 3 ? 'top-3' : '';
+      card.className = `card ${topClass}`;
+      card.style.animationDelay = `${i * 50}ms`;
+
+      if (!r.ok) {
+        card.innerHTML = `
+          <div class="rank">${rank}</div>
+          <div class="avatar"></div>
+          <div class="info">
+            <a class="name" href="https://raider.io/characters/${r.input.region}/${r.input.realm}/${r.input.name}" target="_blank" rel="noopener">${r.input.name}</a>
+            <div class="realm">${r.input.realm}</div>
+          </div>
+          <div class="spacer"></div>
+          <div class="err">${r.error}</div>
+        `;
+      } else {
+        const color = CLASS_COLORS[r.class] || "#888";
+        card.style.setProperty('--cc', color);
+        card.style.setProperty('--cc-glow', hexToRgba(color, 0.35));
+        const roleCell = (label, val, cls) => `
+          <span class="role ${cls} ${val < 1 ? 'zero' : ''}">
+            <span class="role-label">${label}</span>
+            <span class="role-val">${Math.round(val)}</span>
+          </span>`;
+        const avatarStyle = r.thumbnail ? `background-image:url('${r.thumbnail}')` : '';
+        card.innerHTML = `
+          <div class="rank">${rank}</div>
+          <div class="avatar" style="${avatarStyle}"></div>
+          <div class="info">
+            <a class="name" href="${r.url}" target="_blank" rel="noopener">${r.name}</a>
+            <div class="realm">${r.realm} · <span class="class">${r.class}</span></div>
+            <div class="roles">
+              ${roleCell('Tank', r.tank, 'tank')}
+              ${roleCell('Heal', r.heal, 'heal')}
+              ${roleCell('DPS',  r.dps,  'dps')}
+            </div>
+          </div>
+          <div class="spacer"></div>
+          <div class="score-wrap">
+            <div class="score">${Math.round(r.score)}</div>
+            <div class="score-label">Rating</div>
+          </div>
+        `;
+      }
+      list.appendChild(card);
+    });
+  }
+
+  const REFRESH_MS = 10 * 60 * 1000; // 10 minutes
+  let nextRefreshAt = 0;
+  let isLoading = false;
+
+  const dot      = document.getElementById("status-dot");
+  const statusEl = document.getElementById("status-text");
+  const barFill  = document.getElementById("bar-fill");
+  const countEl  = document.getElementById("countdown");
+
+  function fmtCountdown(ms) {
+    if (ms <= 0) return "0s";
+    const s = Math.ceil(ms / 1000);
+    const m = Math.floor(s / 60);
+    const r = s % 60;
+    return m > 0 ? `${m}m ${r}s` : `${r}s`;
+  }
+
+  function tick() {
+    if (isLoading) return;
+    const remaining = nextRefreshAt - Date.now();
+    const elapsed = REFRESH_MS - remaining;
+    const pct = Math.min(100, Math.max(0, (elapsed / REFRESH_MS) * 100));
+    barFill.style.width = pct + "%";
+    countEl.textContent = fmtCountdown(remaining);
+    if (remaining <= 0) loadAll();
+  }
+
+  async function loadAll() {
+    if (isLoading) return;
+    isLoading = true;
+    dot.classList.add("loading");
+    statusEl.textContent = "Refreshing…";
+
+    const list = document.getElementById("list");
+    if (!list.children.length) {
+      list.innerHTML = CHARACTERS.map(c =>
+        `<div class="card"><div class="skeleton">Loading ${c.name} (${c.realm})…</div></div>`
+      ).join("");
+    }
+
+    const results = await Promise.all(
+      CHARACTERS.map(async c => {
+        try {
+          const r = await fetchScore(c);
+          return { ...r, input: c };
+        } catch (e) {
+          return { ok: false, error: e.message, input: c, score: -1 };
+        }
+      })
+    );
+    render(results);
+
+    isLoading = false;
+    dot.classList.remove("loading");
+    statusEl.textContent = `Updated ${new Date().toLocaleTimeString()}`;
+    nextRefreshAt = Date.now() + REFRESH_MS;
+    barFill.style.width = "0%";
+  }
+
+  document.getElementById("refresh-btn").addEventListener("click", loadAll);
+  loadAll();
+  setInterval(tick, 1000);
+</script>
+</body>
+</html>

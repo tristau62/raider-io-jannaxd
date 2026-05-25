@@ -1,0 +1,41 @@
+name: Poll Raider.IO Runs
+
+on:
+  schedule:
+    # Every 10 minutes. GitHub may delay scheduled runs under heavy load.
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: poll-runs
+  cancel-in-progress: false
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Poll and post
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: node scripts/poll-runs.js
+
+      - name: Commit state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/seen-runs.json
+          if git diff --quiet --cached; then
+            echo "No state changes."
+            exit 0
+          fi
+          git commit -m "chore: update seen runs state"
+          git pull --rebase --autostash
+          git push
