@@ -190,12 +190,12 @@ async function findParseForRun(c, run) {
 
 function parseColorHex(pct) {
   // WCL parse color thresholds.
-  if (pct >= 99) return "🟠 Astounding";
-  if (pct >= 95) return "🟣 Legendary";
-  if (pct >= 75) return "🔵 Epic";
-  if (pct >= 50) return "🟢 Rare";
-  if (pct >= 25) return "🟢 Uncommon";
-  return "⚪ Common";
+  if (pct >= 99) return "🩷 Pink";
+  if (pct >= 95) return "🟠 Orange";
+  if (pct >= 75) return "🟣 Purple";
+  if (pct >= 50) return "🔵 Blue";
+  if (pct >= 25) return "🟢 Green";
+  return "⚪ Grey";
 }
 
 async function postRun(profile, run, parse) {
