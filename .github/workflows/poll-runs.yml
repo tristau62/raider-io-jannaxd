@@ -2,8 +2,8 @@ name: Poll Raider.IO Runs
 
 on:
   schedule:
-    # Every 10 minutes. GitHub may delay scheduled runs under heavy load.
-    - cron: "*/10 * * * *"
+    # Every 5 minutes — GitHub's stated minimum. May still drift under load.
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 concurrency:
