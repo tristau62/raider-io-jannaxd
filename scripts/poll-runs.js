@@ -32,6 +32,9 @@ const CHARACTERS = [
   { region: "us", realm: "tichondrius", name: "Restyx" },
   { region: "us", realm: "tichondrius", name: "Aquendlock" },
   { region: "us", realm: "tichondrius", name: "Dilloc" },
+  { region: "us", realm: "tichondrius", name: "Tedcowzynski" },
+  { region: "us", realm: "tichondrius", name: "Drakthorr" },
+
 ];
 
 const CLASS_COLORS = {
