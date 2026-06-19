@@ -1,9 +1,10 @@
 name: Poll Raider.IO Runs
 
 on:
-  schedule:
-    # Every 5 minutes — GitHub's stated minimum. May still drift under load.
-    - cron: "*/5 * * * *"
+  # Scheduled polling disabled. Re-enable by uncommenting the cron below.
+  # schedule:
+  #   # Every 5 minutes — GitHub's stated minimum. May still drift under load.
+  #   - cron: "*/5 * * * *"
   workflow_dispatch:
 
 concurrency:
